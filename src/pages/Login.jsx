@@ -33,16 +33,15 @@ const Login = () => {
 			console.log(response.data.message);
 			console.log(response.data.user);
 			loginAuthSet(response.data.token, response.data.user);
-			// localStorage.setItem("token", response.data.token);
-			// localStorage.setItem("user", response.data.user.username);
+
 			setSuccess(response.data.message);
 			setError(null);
+			navigate("/");
 		} catch (error) {
 			setError(error.response?.data?.message || "Something is Wrong !!");
 			setSuccess(null);
 		} finally {
 			setIsLoading(false);
-			navigate("/");
 		}
 	};
 

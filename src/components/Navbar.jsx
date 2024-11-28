@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import ProfileMenu from "./ProfileMenu";
+import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
 	// State to toggle the mobile menu
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const { auth } = useContext(AuthContext);
 
 	// Toggle the mobile menu when hamburger is clicked
 	const toggleMenu = () => {
@@ -15,30 +18,39 @@ const Navbar = () => {
 			{/* Left Section - Website Name and Home Link */}
 			<div className="flex items-baseline space-x-6">
 				<h1 className="text-xl font-semibold text-gray-800">
-					Stroyline-com
+					Storyline-com
 				</h1>
 				<Link
 					to="/"
-					className="text-gray-700 hover:text-gray-900 font-medium  "
+					className="text-gray-700 hover:text-gray-900 font-medium"
 				>
 					Home
 				</Link>
 			</div>
 
-			{/* Right Section - Desktop Navigation */}
-			<div className="hidden md:flex items-center space-x-4">
-				<Link
-					to="/login"
-					className="text-gray-700 hover:bg-gray-100 border border-gray-400 py-2 px-4 rounded-md text-sm font-medium transition duration-200"
-				>
-					Login
-				</Link>
-				<Link
-					to="/register"
-					className="bg-gray-800 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-gray-700 transition duration-200"
-				>
-					Register
-				</Link>
+			{/* Right Section */}
+			<div className="hidden md:flex items-center space-x-4 mr-4">
+				{auth?.user ? (
+					<ProfileMenu
+						username={auth.user.username}
+						
+					/> // Render ProfileMenu if logged in
+				) : (
+					<>
+						<Link
+							to="/login"
+							className="text-gray-700 hover:bg-gray-100 border border-gray-400 py-2 px-4 rounded-md text-sm font-medium transition duration-200"
+						>
+							Login
+						</Link>
+						<Link
+							to="/register"
+							className="bg-gray-800 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-gray-700 transition duration-200"
+						>
+							Register
+						</Link>
+					</>
+				)}
 			</div>
 
 			{/* Hamburger Icon (Mobile View) */}
@@ -62,30 +74,6 @@ const Navbar = () => {
 						/>
 					</svg>
 				</button>
-			</div>
-
-			{/* Mobile Menu - Conditional Rendering */}
-			<div
-				className={`${
-					isMenuOpen ? "block" : "hidden"
-				} absolute top-16 right-4 left-4 bg-white shadow-md rounded-lg md:hidden`}
-			>
-				<div className="flex flex-col items-center space-y-4 py-4">
-					<Link
-						to="/login"
-						className="text-gray-700 hover:bg-gray-100 py-2 px-4 rounded-md text-sm font-medium"
-						onClick={() => setIsMenuOpen(false)} // Close the menu when an item is clicked
-					>
-						Login
-					</Link>
-					<Link
-						to="/register"
-						className="bg-gray-800 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-gray-700"
-						onClick={() => setIsMenuOpen(false)} // Close the menu when an item is clicked
-					>
-						Register
-					</Link>
-				</div>
 			</div>
 		</nav>
 	);

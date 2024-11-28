@@ -1,23 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import AuthProvider from "./context/AuthContext";
+import Profile from "./pages/Profile";
+
+import PrivateRoute from "./components/PrivateRoute";
 const App = () => {
 	return (
-		<AuthProvider>
-			<Router>
-				<Navbar />
-				<div>
-					<Routes>
-						<Route path="/" element={<h1>"WORKING"</h1>} />
-						<Route path="/register" element={<Register />} />
-						<Route path="/login" element={<Login />} />
-					</Routes>
-				</div>
-			</Router>
-		</AuthProvider>
+		<Router>
+			<Navbar />
+			<div>
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<h1 className=" h-40 flex justify-center items-center">
+								{`Hello ${undefined}`}
+							</h1>
+						}
+					/>
+					<Route path="/register" element={<Register />} />
+					<Route path="/login" element={<Login />} />
+					<Route
+						path="/profile"
+						element={
+							<PrivateRoute>
+								<Profile />
+							</PrivateRoute>
+						}
+					/>
+				</Routes>
+			</div>
+		</Router>
 	);
 };
 
